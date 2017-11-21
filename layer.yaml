@@ -1,0 +1,1 @@
+includes: ['layer:basic', 'layer:snap', 'layer:metrics', 'interface:nrpe-external-master','layer:nagios']

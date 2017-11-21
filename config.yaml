@@ -1,0 +1,5 @@
+options:
+  channel:
+    type: string
+    default: "edge"
+    description: "default snap channel"
