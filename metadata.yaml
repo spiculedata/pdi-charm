@@ -11,3 +11,7 @@ tags:
 subordinate: false
 series:
   - xenial
+
+requires:  
+  mysql:
+    interface: mysql
