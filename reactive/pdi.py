@@ -8,7 +8,10 @@ from subprocess import check_output
 import string
 import random
 import os
+import xml.etree.ElementTree as ET
 
+kettlepropsdir = '/home/ubuntu/.kettle/'
+sharedfile = 'shared.xml'
 @when_not('pentaho-data-integration.installed')
 def install_pentaho_data_integration():
     channel = config ('channel')
@@ -20,12 +23,54 @@ def install_pentaho_data_integration():
 @when('mysql.available')
 def setup(mysql):
     status_set('active', 'Pentaho Data Integration running. Connections:'+mysql.host())
-    str = create_connection(mysql.user(), mysql.password(), mysql.database(), mysql.host(), mysql.host(), mysql.port())
-    write_a_file("/home/ubuntu/.kettle/", "shared.xml", str)
+    add_data_source(mysql.user(), mysql.password(), mysql.database(), mysql.host(), mysql.host(), mysql.port())
 
-def create_connection(user, password, database, server, name, port, ):
-    str ="""<?xml version="1.0" encoding="UTF-8"?>
+def add_data_source(user, password, database, server, name, port):
+    #Check if the file exists
+    #If it doesnt exist create file with wrapping tags
+    if not os.path.isfile(kettlepropsdir):
+        write_a_file(kettlepropsdir, sharedfile, create_shared_objects_template())
+
+    #read the file
+    st=read_file(kettlepropsdir+sharedfile)
+    #convert to xml
+    tree = ET.ElementTree(ET.fromstring(st))
+    #inject new connection
+    conn = create_connection(user, password, database, server, name, port)
+    conntree = ET.ElementTree(ET.fromstring(conn)).getroot()
+    root_node = tree.getroot()
+    child = root_node.append(conntree)
+    #write the file
+    xmlstr = ET.tostring(root_node, encoding='utf8', method='xml')
+    write_a_file(kettlepropsdir,sharedfile,str(xmlstr, 'utf-8'))
+
+
+def remove_data_source(name):
+    #Read string to xml
+    st=read_file(kettlepropsdir+sharedfile)
+    #Find the connection node by name
+    tree = ET.ElementTree(ET.fromstring(st)).getroot()
+
+    #Remove node and all subelements
+    for child in tree.findall("connection"):
+       for connname in child.findall("name"):
+         if name == connname.text:
+          tree.remove(child) 
+    #Write back to file 
+    xmlstr = ET.tostring(tree, encoding='utf8', method='xml')
+    write_a_file(kettlepropsdir,sharedfile,str(xmlstr, 'utf-8'))
+
+
+def create_shared_objects_template():
+    
+    return """<?xml version="1.0" encoding="UTF-8"?>
 <sharedobjects>
+
+</sharedobjects>"""
+    
+
+def create_connection(user, password, database, server, name, port):
+    st ="""
   <connection>
     <name>{}</name>
     <server>{}</server>
@@ -51,11 +96,14 @@ def create_connection(user, password, database, server, name, port, ):
       <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
     </attributes>
   </connection>
-
-</sharedobjects>
 """.format(name, server, database, port, user, password)
-    return str
+    return st
 
+def read_file(filename):
+    #read a file
+    with open(filename) as f:
+        return ''.join(line.rstrip() for line in f)
+    
 def write_a_file(path, file, text):
     
     if not os.path.exists(path):
