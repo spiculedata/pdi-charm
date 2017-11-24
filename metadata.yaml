@@ -1,6 +1,6 @@
-name: pdi
+name: pentaho-data-integration
 summary: Pentaho Data Integration
-maintainer: Spicule - info@spicule.co.uk
+maintainer: Spicule <info@spicule.co.uk>
 description: |
     Pentaho Data Integration is the component of Pentaho 
     that is responsible for the Extract, Transform and Load
