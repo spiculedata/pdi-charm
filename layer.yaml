@@ -1,1 +1,2 @@
-includes: ['layer:basic', 'layer:snap', 'layer:metrics', 'interface:nrpe-external-master','layer:nagios','interface:mysql']
+includes: ['layer:basic', 'layer:snap', 'layer:metrics', 'interface:nrpe-external-master','layer:nagios','interface:mysql', 'layer:leadership']
+repo: git@github.com:spiculedata/pdi-charm.git

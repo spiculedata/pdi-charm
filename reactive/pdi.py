@@ -26,6 +26,7 @@ def setup(mysql):
     add_data_source(mysql.user(), mysql.password(), mysql.database(), mysql.host(), mysql.host(), mysql.port())
 
 def add_data_source(user, password, database, server, name, port):
+    password = generate_encrypted_password(password)
     #Check if the file exists
     #If it doesnt exist create file with wrapping tags
     if not os.path.isfile(kettlepropsdir):
@@ -119,99 +120,107 @@ def write_a_file(path, file, text):
 
 
 
-@when('pentaho-data-integration.installed')
-def restart(java):
-    set_state("pdi.restarting")
-    status_set('maintenance', 'Configuration has changed, restarting Carte.')
-    stop()
-    start()
-    remove_state("pdi.restarting")
-    remove_state('java.updated')
-    remove_state('pdi.restart_scheduled')
+# @when('pentaho-data-integration.installed')
+# def restart(java):
+#     set_state("pdi.restarting")
+#     status_set('maintenance', 'Configuration has changed, restarting Carte.')
+#     stop()
+#     start()
+#     remove_state("pdi.restarting")
+#     remove_state('java.updated')
+
+#     remove_state('pdi.restart_scheduled')
 
 
-@when('leadership.is_leader')
-def config_leader():
-    leader_set(hostname=hookenv.unit_private_ip())
-    leader_set(public_ip=hookenv.unit_public_ip())
-    leader_set(username='cluster')
-    leader_set(password=hookenv.config('carte_password'))
-    leader_set(port=hookenv.config('carte_port'))
-    render_master_config()
+# @when('leadership.is_leader')
+# def config_leader():
+#     leader_set(hostname=hookenv.unit_private_ip())
+#     leader_set(public_ip=hookenv.unit_public_ip())
+#     leader_set(username='cluster')
+#     leader_set(password=hookenv.config('carte_password'))
+#     leader_set(port=hookenv.config('carte_port'))
+#     render_master_config()
 
 
-@when_not('leadership.is_leader')
-def update_slave_config():
-    render_slave_config()
+# @when_not('leadership.is_leader')
+# def update_slave_config():
+#     render_slave_config()
 
 
-@when('leadership.changed')
-def update_master_config():
-    log("leadership has changed, scheduling restart")
-    status_set('maintenance', 'Leadership changed, restart scheduled.')
-    set_state("pdi.restart_scheduled")
+# @when('leadership.changed')
+# def update_master_config():
+#     log("leadership has changed, scheduling restart")
+#     status_set('maintenance', 'Leadership changed, restart scheduled.')
+#     set_state("pdi.restart_scheduled")
 
 
-def render_slave_config():
-    render('carte-config/slave.xml.j2', '/home/etl/carte-config.xml', {
-        'carteslaveport': leader_get('port'),
-        'carteslavehostname': hookenv.unit_private_ip(),
-        'cartemasterhostname': leader_get('hostname'),
-        'carteslavepassword': leader_get('password'),
-        'cartemasterpassword': leader_get('password'),
-        'cartemasterport': leader_get('port')
-    })
+# def render_slave_config():
+#     render('carte-config/slave.xml.j2', '/home/etl/carte-config.xml', {
+#         'carteslaveport': leader_get('port'),
+#         'carteslavehostname': hookenv.unit_private_ip(),
+#         'cartemasterhostname': leader_get('hostname'),
+#         'carteslavepassword': leader_get('password'),
+#         'cartemasterpassword': leader_get('password'),
+#         'cartemasterport': leader_get('port')
+#     })
 
 
-def render_master_config():
-    render('carte-config/master.xml.j2', '/home/etl/carte-config.xml', {
-        'carteport': leader_get('port'),
-        'cartehostname': hookenv.unit_private_ip()
-    })
+# def render_master_config():
+#     render('carte-config/master.xml.j2', '/home/etl/carte-config.xml', {
+#         'carteport': leader_get('port'),
+#         'cartehostname': hookenv.unit_private_ip()
+#     })
 
 
-def start():
-    currentenv = dict(os.environ)
-    port = hookenv.config('carte_port')
-    javaopts = hookenv.config('java_opts')
+# def start():
+#     currentenv = dict(os.environ)
+#     port = hookenv.config('carte_port')
+#     javaopts = hookenv.config('java_opts')
 
-    if javaopts:
-        currentenv['JAVA_OPTS'] = javaopts
+#     if javaopts:
+#         currentenv['JAVA_OPTS'] = javaopts
 
-    try:
-        check_call(['pgrep', '-f', 'org.pentaho.di.www.Carte'])
-    except CalledProcessError:
-        check_call(['su', 'etl', '-c',
-                    '/opt/data-integration/carte.sh '
-                    '/home/etl/carte-config.xml &'],
-                   env=currentenv, cwd="/opt/data-integration")
+#     try:
+#         check_call(['pgrep', '-f', 'org.pentaho.di.www.Carte'])
+#     except CalledProcessError:
+#         check_call(['su', 'etl', '-c',
+#                     '/opt/data-integration/carte.sh '
+#                     '/home/etl/carte-config.xml &'],
+#                    env=currentenv, cwd="/opt/data-integration")
 
-    hookenv.open_port(port)
-    status_set('active',
-               'Carte is ready! Master is:' + leader_get('public_ip'))
-
-
-def stop():
-    call(['pkill', '-f', 'org.pentaho.di.www.Carte'])
+#     hookenv.open_port(port)
+#     status_set('active',
+#                'Carte is ready! Master is:' + leader_get('public_ip'))
 
 
-def remove():
-    rmtree('/opt/data-integration')
+# def stop():
+#     call(['pkill', '-f', 'org.pentaho.di.www.Carte'])
 
 
-def change_carte_password(pword):
-    log("altering carte password to: " + pword)
-    generate_encypted_password(pword)
-    encrpword = process.splitlines()[-1]
-    log("encrypted password is: " + encrpword.decode('utf-8'))
-    with open("/opt/data-integration/pwd/kettle.pwd", "w") as text_file:
-        text_file.write("cluster: " + encrpword.decode('utf-8'))
+# def remove():
+#     rmtree('/opt/data-integration')
 
-def generate_encypted_password(password):
-    log("altering carte password to: " + pword)
-    process = check_output(['su', 'etl', '-c',
-                            '/opt/data-integration/encr.sh -carte ' + pword])
 
+# def change_carte_password(pword):
+#     log("altering carte password to: " + pword)
+#     generate_encrypted_password(pword)
+#     encrpword = process.splitlines()[-1]
+#     log("encrypted password is: " + encrpword.decode('utf-8'))
+#     with open("/opt/data-integration/pwd/kettle.pwd", "w") as text_file:
+#         text_file.write("cluster: " + encrpword.decode('utf-8'))
+
+def generate_encrypted_password(password):
+    #run check output
+    
+    output = check_output(['pentaho-data-integration-spicule.encrypt', '-kettle', password])
+    
+    arr = output.splitlines()
+
+    for a in arr:
+        
+        a = a.decode('utf-8')
+        if a.startswith("Encrypted"): 
+            return a
 #@when('pentaho-data-integration.installed')
 #@when_not('pentaho-data-integration.configured')
 #def configure_pentaho-data-integration():

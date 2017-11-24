@@ -1,13 +1,15 @@
 name: pdi
-summary: pentaho data integration
-maintainer: Stephen Downie <Stephen.Downie@stephens-laptop>
+summary: Pentaho Data Integration
+maintainer: Spicule - info@spicule.co.uk
 description: |
-    pentaho data integration is the component of Pentaho 
+    Pentaho Data Integration is the component of Pentaho 
     that is responsible for the Extract, Transform and Load
     processs
   
 tags:
-  - misc
+  - analytics
+  - big_data
+
 subordinate: false
 series:
   - xenial
