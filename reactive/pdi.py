@@ -22,7 +22,11 @@ def install_pentaho_data_integration():
 
 @when('mysql.available')
 def setup(mysql):
-    status_set('active', 'Pentaho Data Integration running. Connections:'+mysql.host())
+    id = ''
+      for relation_id in hookenv.relation_ids('mysql'):
+        id = relation_id
+
+    status_set('active', 'Pentaho Data Integration running. Connections:'+id)
     add_data_source(mysql.user(), mysql.password(), mysql.database(), mysql.host(), mysql.host(), mysql.port())
 
 def add_data_source(user, password, database, server, name, port):
