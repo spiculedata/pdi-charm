@@ -21,7 +21,7 @@ sharedfile = 'shared.xml'
 def install_pentaho_data_integration():
     channel = config ('channel')
     status_set('maintenance', 'Installing pentaho-data-integration snap ')
-    snap.install('pentaho-data-integration-spicule', channel=channel, devmode=True)
+    snap.install('pentaho-data-integration-spicule', channel=channel, devmode=False)
     set_state('pentaho-data-integration.installed')
     status_set('active', 'Pentaho Data Integration running')
 

@@ -1,7 +1,7 @@
 options:
   channel:
     type: string
-    default: "edge"
+    default: "stable"
     description: "default snap channel"
   carte_port:
     type: string
