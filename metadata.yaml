@@ -17,3 +17,5 @@ series:
 requires:  
   mysql:
     interface: mysql
+  elasticsearch:
+    interface: elasticsearch
