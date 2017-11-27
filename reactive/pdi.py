@@ -16,6 +16,7 @@ from subprocess import check_call
 
 kettlepropsdir = '/home/ubuntu/.kettle/'
 sharedfile = 'shared.xml'
+
 @when_not('pentaho-data-integration.installed')
 def install_pentaho_data_integration():
     channel = config ('channel')
@@ -138,7 +139,7 @@ def restart():
     remove_state('java.updated')
     remove_state('pdi.restart_scheduled')
 
-
+@when('pentaho-data-integration.installed')
 @when('leadership.is_leader')
 def config_leader():
     leader_set(hostname=hookenv.unit_private_ip())
@@ -148,6 +149,7 @@ def config_leader():
     leader_set(port=hookenv.config('carte_port'))
     render_master_config()
 
+@when('pentaho-data-integration.installed')
 @when_not('leadership.is_leader')
 def update_slave_config():
     render_slave_config()
