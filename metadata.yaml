@@ -19,3 +19,5 @@ requires:
     interface: mysql
   elasticsearch:
     interface: elasticsearch
+
+terms: ["spiculecharms/pdi-terms"]
