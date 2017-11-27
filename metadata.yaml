@@ -19,5 +19,7 @@ requires:
     interface: mysql
   elasticsearch:
     interface: elasticsearch
+  hadoop:
+    interface: hadoop-plugin
 
 terms: ["spiculecharms/pdi-terms"]

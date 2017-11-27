@@ -34,6 +34,10 @@ def setup(mysql):
     add_data_source(mysql.user(), mysql.password(), mysql.database(), mysql.host(), mysql.host(), mysql.port())
 
 
+@when('hadoop.ready')
+def hadoop_ready(hadoop):
+    False
+
 @when('elasticsearch.available')
 def connect_to_elasticsearch(elasticsearch):
     print(elasticsearch.host())
