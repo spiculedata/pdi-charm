@@ -1,0 +1,61 @@
+# runjob:
+#   description: Execute a Job that has been placed on the server.
+#   params:
+#      path:
+#        type: string
+#        description: Path to the job to be executed.
+#      java-opts:
+#        type: string
+#        description: Override the default JAVA_OPTS
+#      log-level:
+#        type: string
+#        description: The PDI logging level (Basic, Detailed, Debug, Rowlevel, Error, Nothing)
+#      log-file:
+#         type: string
+#         description: The log file location
+#      parameters:
+#          type: string
+#          description: The parameters defined in your PDI job.
+#      cron-entry:
+#          type: string
+#          description: The cron execution time and date(optional if you would like to schedule an execution)
+#   required: [path]
+#   additionalProperties: true
+# runtransformation:
+#     description: Execute a Transformation that has been placed on the server.
+#     params:
+#         path:
+#             type: string
+#             description: Path of the Transformation to be executed.
+#         java-opts:
+#             type: string
+#             description: Override the default JAVA_OPTS
+#         log-level:
+#             type: string
+#             description: The PDI logging level (Basic, Detailed, Debug, Rowlevel, Error, Nothing)
+#         log-file:
+#             type: string
+#             description: The log file location
+#         parameters:
+#             type: string
+#             description: The parameters defined in your PDI job.
+#         cron-entry:
+#             type: string
+#             description: The cron execution time and date(optional if you would like to schedule an execution)
+#     required: [path]
+# removeetlschedule:
+#      description: Remove a scheduled ETL.
+#      params:
+#          cron-entry:
+#             type: string
+#             description: The cron execution time and date(optional if you would like to schedule an execution)
+#          name:
+#             type: string
+#             description: The name of the ETL to remove(including .ktr or .kjb)
+#      required: [name]
+# getscheduledetl:
+#      description: List scheduled ETL
+#      params:
+#         type:
+#             type: string
+#             enum: [transformations, jobs, all]

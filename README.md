@@ -10,7 +10,7 @@ Migrating data between applications or databases.
 
 Deploying the charm is as simple as:
 
-    juju deploy ~/spiculecharms/pentaho-data-integration
+    juju deploy ~spiculecharms/pentaho-data-integration
 
 To interact with PDI you can run one of the following:
     
