@@ -3,3 +3,19 @@ options:
     type: string
     default: "edge"
     description: "default snap channel"
+  carte_port:
+    type: string
+    default: '9999'
+    description: The default Carte port for remote job execution and monitoring.
+  java_opts:
+    type: string
+    default: ''
+    description: Override the default JAVA_OPTS to set memory limits etc.
+  carte_password:
+    type: string
+    default: cluster
+    description: The password used to connect to Carte.
+  run_carte:
+    type: boolean
+    default: true
+    description: Run the Carte server for remote execution of PDI jobs
