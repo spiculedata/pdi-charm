@@ -9,6 +9,10 @@ import string
 import random
 import os
 import xml.etree.ElementTree as ET
+from charms.leadership import leader_set, leader_get
+from charmhelpers.core.templating import render
+from charmhelpers.core.hookenv import log
+from subprocess import check_call
 
 kettlepropsdir = '/home/ubuntu/.kettle/'
 sharedfile = 'shared.xml'
@@ -125,7 +129,7 @@ def write_a_file(path, file, text):
 
 
 @when('pentaho-data-integration.installed')
-def restart(java):
+def restart():
     set_state("pdi.restarting")
     status_set('maintenance', 'Configuration has changed, restarting Carte.')
     stop()
@@ -190,8 +194,7 @@ def start():
 
 
 def stop():
-  check_call(['service', 'snap.pentaho-data-integration-spicule.carte', 'stop'],
-                   env=currentenv)
+  check_call(['service', 'snap.pentaho-data-integration-spicule.carte', 'stop'])
 
 
 

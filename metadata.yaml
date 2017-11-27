@@ -1,5 +1,5 @@
-name: Pentaho-Data-Integration
-summary: Pentaho Data Integration
+name: pentaho-data-integration
+summary: Pentaho Data Integration Server
 maintainer: Spicule <info@spicule.co.uk>
 description: |
     Pentaho Data Integration is the component of Pentaho 
