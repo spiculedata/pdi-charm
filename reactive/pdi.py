@@ -34,6 +34,14 @@ def setup(mysql):
     status_set('active', 'Pentaho Data Integration running. Connections:'+id)
     add_data_source(mysql.user(), mysql.password(), mysql.database(), mysql.host(), mysql.host(), mysql.port())
 
+
+@when('elasticsearch.available')
+def connect_to_elasticsearch(elasticsearch):
+    print(elasticsearch.host())
+    print(elasticsearch.port())
+    print(elasticsearch.cluster_name())
+
+
 def add_data_source(user, password, database, server, name, port):
     password = generate_encrypted_password(password)
     #Check if the file exists

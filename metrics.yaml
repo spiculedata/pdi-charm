@@ -5,10 +5,10 @@ metrics:
 
 # snap channel
 
-# instance data
+# instance data (cpu/ram/cloud vs non cloud/instance type/diskspace etc)
 
 # job execution count
 
 # transformation execution count
 
-# carte usage?
+# carte usage
