@@ -1,2 +1,2 @@
-includes: ['layer:basic', 'layer:snap', 'layer:metrics', 'interface:nrpe-external-master','layer:nagios','interface:mysql', 'layer:leadership', 'interface:elasticsearch']
+includes: ['layer:basic', 'layer:snap', 'layer:metrics', 'interface:nrpe-external-master','layer:nagios','interface:mysql', 'layer:leadership', 'interface:elasticsearch', 'interface:hadoop-plugin']
 repo: git@github.com:spiculedata/pdi-charm.git

@@ -1,0 +1,15 @@
+Model  Controller  Cloud/Region   Version  SLA
+pdi    jaas.       aws/eu-west-1  2.2.6    unsupported
+
+App                       Version  Status   Scale  Charm                     Store       Rev  OS      Notes
+pdi2                               waiting    0/1  pentaho-data-integration  jujucharms   35  ubuntu  
+pentaho-data-integration           active       1  pentaho-data-integration  jujucharms   41  ubuntu  
+
+Unit                         Workload  Agent       Machine  Public address  Ports     Message
+pdi2/0                       waiting   allocating  1        34.252.0.104              waiting for machine
+pentaho-data-integration/0*  active    idle        0        34.240.127.199  9999/tcp  Carte is ready! Master is:34.240.127.199
+
+Machine  State    DNS             Inst id              Series  AZ          Message
+0        started  34.240.127.199  i-0690e3e04886158a3  xenial  eu-west-1a  running
+1        pending  34.252.0.104    i-086e38f6abc70383b  xenial  eu-west-1b  pending
+
