@@ -1,0 +1,27 @@
+<slave_config>
+  <masters>
+
+    <slaveserver>
+      <name>master</name>
+      <hostname>{{ cartemasterhostname }}</hostname>
+      <port>{{ cartemasterport }}</port>
+      <username>cluster</username>
+      <password>{{ cartemasterpassword }}</password>
+      <master>Y</master>
+    </slaveserver>
+
+  </masters>
+
+  <report_to_masters>Y</report_to_masters>
+
+  <slaveserver>
+    <name>slave-{{ carteslavehostname }}</name>
+    <hostname>{{ carteslavehostname }}</hostname>
+    <port>{{ carteslaveport }}</port>
+    <username>cluster</username>
+    <password>{{ carteslavepassword }}</password>
+    <master>N</master>
+  </slaveserver>
+
+
+</slave_config>

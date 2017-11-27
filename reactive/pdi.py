@@ -9,6 +9,7 @@ import string
 import random
 import os
 import xml.etree.ElementTree as ET
+from charms.leadership import leader_set, leader_get
 
 kettlepropsdir = '/home/ubuntu/.kettle/'
 sharedfile = 'shared.xml'
