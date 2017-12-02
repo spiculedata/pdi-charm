@@ -23,6 +23,7 @@ def install_pentaho_data_integration():
     status_set('maintenance', 'Installing pentaho-data-integration snap ')
     snap.install('pentaho-data-integration-spicule', channel=channel, devmode=False)
     set_state('pentaho-data-integration.restart_scheduled')
+    set_state('pentaho-data-integration.installed')
     status_set('active', 'Pentaho Data Integration awaiting scheduled restart')
 
 @when('mysql.available')
@@ -133,20 +134,16 @@ def write_a_file(path, file, text):
 
 
 
-
-
-
-
 @when('pentaho-data-integration.installed')
 @when('pentaho-data-integration.restart_scheduled')
 def restart():
-    set_state("pdi.restarting")
+    set_state("pentaho-data-integration.restarting")
     status_set('maintenance', 'Configuration has changed, restarting Carte.')
     stop()
     start()
-    remove_state("pdi.restarting")
+    remove_state("pentaho-data-integration.restarting")
     remove_state('java.updated')
-    remove_state('pdi.restart_scheduled')
+    remove_state('pentaho-data-integration.restart_scheduled')
 
 @when('pentaho-data-integration.installed')
 @when('leadership.is_leader')
@@ -168,7 +165,7 @@ def update_slave_config():
 def update_master_config():
     log("leadership has changed, scheduling restart")
     status_set('maintenance', 'Leadership changed, restart scheduled.')
-    set_state("pdi.restart_scheduled")
+    set_state("pentaho-data-integration.restart_scheduled")
 
 
 def render_slave_config():

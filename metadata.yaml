@@ -21,4 +21,4 @@ requires:
   elasticsearch:
     interface: elasticsearch
 
-terms: ["spiculecharms/pdi-terms"]
+#terms: ["spiculecharms/pdi-terms"]
