@@ -22,8 +22,8 @@ def install_pentaho_data_integration():
     channel = config ('channel')
     status_set('maintenance', 'Installing pentaho-data-integration snap ')
     snap.install('pentaho-data-integration-spicule', channel=channel, devmode=False)
-    set_state('pentaho-data-integration.installed')
-    status_set('active', 'Pentaho Data Integration running')
+    set_state('pentaho-data-integration.restart_scheduled')
+    status_set('active', 'Pentaho Data Integration awaiting scheduled restart')
 
 @when('mysql.available')
 def setup(mysql):
@@ -138,6 +138,7 @@ def write_a_file(path, file, text):
 
 
 @when('pentaho-data-integration.installed')
+@when('pentaho-data-integration.restart_scheduled')
 def restart():
     set_state("pdi.restarting")
     status_set('maintenance', 'Configuration has changed, restarting Carte.')
