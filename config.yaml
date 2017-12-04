@@ -1,8 +1,16 @@
 options:
+  snapname:
+    type: string
+    default: pentaho-data-integration-spicule
+    description: Allows a user to install a custom Snap
   channel:
     type: string
     default: stable
     description: "default snap channel"
+  devmode:
+    type: boolean
+    default: false
+    description: Allows the snap to install in DevMode
   carte_port:
     type: string
     default: '9999'

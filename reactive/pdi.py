@@ -20,8 +20,10 @@ sharedfile = 'shared.xml'
 @when_not('pentaho-data-integration.installed')
 def install_pentaho_data_integration():
     channel = config ('channel')
+    devmode = config ('devmode')
+    snapname = config ('snapname')
     status_set('maintenance', 'Installing pentaho-data-integration snap ')
-    snap.install('pentaho-data-integration-spicule', channel=channel, devmode=False)
+    snap.install(snapname, channel=channel, devmode=devmode)
     set_state('pentaho-data-integration.restart_scheduled')
     set_state('pentaho-data-integration.installed')
     status_set('active', 'Pentaho Data Integration awaiting scheduled restart')
